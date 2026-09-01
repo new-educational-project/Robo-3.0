@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#05070b">
+  <title>Robô Léo 3.0 — Jornada de Aprendizagem</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">🤖</div>
+      <div>
+        <h1>Robô Léo <span class="version-chip">3.0</span></h1>
+        <p>Rotina consciente, sustentabilidade, convivência e direitos humanos</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div id="activeProfileBar" class="active-profile-bar hidden" aria-label="Perfil ativo">
+        <img id="activeRobotAvatar" class="active-robot-avatar" src="assets/robo_m_inicial.png" alt="Avatar do robô"><span>👤 <strong id="activeProfileName">Jogador</strong></span><span class="active-robot-name">🤖 <strong id="activeRobotName">Robô Jogador</strong></span>
+        <button id="headerContractBtn" type="button">📄 Contrato</button>
+        <button id="headerExportProfileBtn" type="button">💾 Exportar</button>
+        <button id="switchProfileBtn" type="button">⇄ Trocar perfil</button>
+      </div>
+      <button class="header-btn" id="helpBtn" type="button">❔ Instruções</button>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="profileScreen" class="screen profile-screen">
+      <div class="profile-shell">
+        <div class="profile-intro">
+          <span class="eyebrow">PERFIL DO JOGADOR</span>
+          <h2>Entre na sua jornada e crie o seu próprio robô.</h2>
+          <p>Crie um perfil ou acesse um perfil já salvo neste navegador. Cada perfil guarda separadamente o progresso dos níveis.</p>
+          <div class="profile-note">
+            <strong>🔐 Acesso simples</strong>
+            <span>Use um nome de perfil único e um PIN de 4 dígitos. O nome diferencia letras maiúsculas de minúsculas: <b>Pedro</b>, <b>PEDRO</b> e <b>pedro</b> são perfis diferentes.</span>
+          </div>
+        </div>
+
+        <div class="profile-grid">
+          <article class="profile-card">
+            <span class="profile-icon">👤</span>
+            <h3>CRIAR PERFIL</h3>
+            <label for="createProfileName">Nome do perfil</label>
+            <input id="createProfileName" maxlength="24" autocomplete="off" placeholder="Ex.: Pedro">
+            <fieldset class="sex-choice" aria-labelledby="sexChoiceLegend">
+              <legend id="sexChoiceLegend">Sexo do jogador</legend>
+              <label class="sex-option"><input type="radio" name="createProfileSex" value="masculino"> <span>♂ Masculino</span></label>
+              <label class="sex-option"><input type="radio" name="createProfileSex" value="feminino"> <span>♀ Feminino</span></label>
+            </fieldset>
+            <label for="createProfilePin">Crie um PIN de 4 dígitos</label>
+            <input id="createProfilePin" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="••••">
+            <label for="createProfilePinConfirm">Confirme o PIN</label>
+            <input id="createProfilePinConfirm" type="password" inputmode="numeric" maxlength="4" autocomplete="new-password" placeholder="••••">
+            <button id="createProfileBtn" class="primary-btn profile-main-btn" type="button">CRIAR E ENTRAR</button>
+          </article>
+
+          <article class="profile-card">
+            <span class="profile-icon">🔐</span>
+            <h3>ACESSAR PERFIL EXISTENTE</h3>
+            <label for="loginProfileName">Nome do perfil</label>
+            <input id="loginProfileName" maxlength="24" autocomplete="username" placeholder="Digite exatamente como foi criado">
+            <label for="loginProfilePin">PIN</label>
+            <input id="loginProfilePin" type="password" inputmode="numeric" maxlength="4" autocomplete="current-password" placeholder="••••">
+            <button id="loginProfileBtn" class="primary-btn profile-main-btn" type="button">CONTINUAR JORNADA</button>
+            <p class="profile-small">Os dados ficam salvos neste navegador enquanto não forem apagados pelo usuário.</p>
+          </article>
+
+          <article class="profile-card profile-transfer-card">
+            <span class="profile-icon">💾</span>
+            <h3>EXPORTAR / IMPORTAR PERFIL</h3>
+            <p>Exporte uma cópia do progresso para guardar ou levar a outro computador. Depois, use IMPORTAR PERFIL no outro dispositivo.</p>
+            <div class="transfer-block">
+              <strong>Exportar perfil salvo neste navegador</strong>
+              <input id="exportProfileName" maxlength="24" autocomplete="off" placeholder="Nome do perfil">
+              <input id="exportProfilePin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="PIN de 4 dígitos">
+              <button id="exportProfileBtn" class="secondary-btn" type="button">💾 EXPORTAR PERFIL</button>
+            </div>
+            <div class="transfer-divider"><span>ou</span></div>
+            <div class="transfer-block">
+              <strong>Importar arquivo de perfil</strong>
+              <input id="importProfileFile" class="file-input" type="file" accept="application/json,.json">
+              <button id="importProfileBtn" class="secondary-btn" type="button">📂 IMPORTAR PERFIL</button>
+            </div>
+          </article>
+        </div>
+        <div id="profileFeedback" class="profile-feedback" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="contractScreen" class="screen contract-screen hidden" aria-labelledby="contractTitle">
+      <div class="contract-stage">
+        <article class="contract-paper" id="contractPaper">
+          <header class="contract-doc-header">
+            <h2 id="contractTitle">CONTRATO DA JORNADA</h2>
+            <p>COMPROMISSO PEDAGÓGICO</p>
+          </header>
+
+          <div class="contract-toolbar">
+            <button id="listenContractBtn" class="contract-audio-btn" type="button">🔊 OUVIR CONTRATO</button>
+            <button id="contractMoreBtn" class="contract-more-btn" type="button">💡 SAIBA MAIS</button>
+          </div>
+
+          <h3 class="contract-lead">Todo jogo tem regras. A vida em sociedade também.</h3>
+          <p class="contract-intro"><strong>Este jogo tem finalidade pedagógica e utiliza conhecimentos fundamentados cientificamente.</strong> Aqui, você joga, pensa, aprende e toma decisões. Suas escolhas ajudam o seu robô a evoluir e convidam você a refletir sobre cuidado de si, respeito às pessoas e cuidado com o meio ambiente.</p>
+
+          <div class="contract-why"><strong>Por que existe este contrato?</strong> Porque regras, acordos e contratos fazem parte da vida em sociedade. Ler antes de aceitar ajuda você a participar de forma consciente, conhecendo seus direitos e responsabilidades.</div>
+
+          <h3 class="contract-section-title">O que cada parte do robô representa</h3>
+          <div class="contract-table-wrap">
+            <table class="contract-table">
+              <thead><tr><th>Área de desenvolvimento</th><th>Sistema do robô</th><th>Função no robô</th></tr></thead>
+              <tbody>
+                <tr><td>Higiene e cuidado pessoal</td><td><strong>🛡️ Escudo de proteção</strong></td><td>Protege contra vírus, sujeira e desgaste.</td></tr>
+                <tr><td>Alimentação</td><td><strong>⚡ Núcleo de energia</strong></td><td>Dá energia para o robô funcionar.</td></tr>
+                <tr><td>Sono</td><td><strong>🌙 Sistema de recarga</strong></td><td>Descansa e recarrega o robô com energia sustentável.</td></tr>
+                <tr><td>Estudos e organização</td><td><strong>🧠 Visor do conhecimento</strong></td><td>Ajuda a reconhecer pessoas, objetos e situações.</td></tr>
+                <tr><td>Lazer e bem-estar</td><td><strong>⚖️ Módulo de equilíbrio</strong></td><td>Ajuda o robô a pensar e tomar boas decisões.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="contract-section-title">Meu compromisso nesta jornada</h3>
+          <div class="commitment-list" id="commitmentList">
+            <label class="commitment-item"><input type="checkbox" class="contract-check"><span><b>Jogar com atenção</b> e responder às questões com seriedade.</span></label>
+            <label class="commitment-item"><input type="checkbox" class="contract-check"><span><b>Pensar antes de escolher</b> e aprender também com os erros.</span></label>
+            <label class="commitment-item"><input type="checkbox" class="contract-check"><span><b>Respeitar as pessoas</b>, as diferenças, as regras de convivência e o meio ambiente.</span></label>
+            <label class="commitment-item"><input type="checkbox" class="contract-check"><span><b>Cuidar do meu progresso</b> sem desanimar quando eu precisar tentar novamente.</span></label>
+            <label class="commitment-item"><input type="checkbox" class="contract-check"><span><b>Usar o que eu aprender</b> para tomar decisões mais conscientes dentro e fora do jogo.</span></label>
+          </div>
+
+          <div class="commitment-progress-card">
+            <div class="commitment-progress-top"><strong id="commitmentProgressText">Compromissos assumidos: 0 de 5</strong><span id="commitmentProgressPercent">0%</span></div>
+            <div class="commitment-progress-track" aria-hidden="true"><div id="commitmentProgressFill" class="commitment-progress-fill"></div></div>
+          </div>
+
+          <div class="contract-rules">
+            <strong>Regras importantes do jogo</strong>
+            <ul>
+              <li>Suas respostas geram pontos de evolução para o robô.</li>
+              <li>Se a pontuação da fase for insuficiente, você poderá tentar novamente.</li>
+              <li>O progresso já conquistado não será apagado.</li>
+              <li>Errar faz parte da aprendizagem: o objetivo é compreender, melhorar e seguir em frente.</li>
+            </ul>
+          </div>
+
+          <section class="contract-signature" aria-live="polite">
+            <button id="signContractBtn" class="contract-sign-btn" type="button" disabled>✍️ ASSINAR MEU COMPROMISSO</button>
+            <div id="contractRegistered" class="contract-registered hidden">
+              <div class="registered-grid">
+                <div><span>Jogador:</span><strong id="contractPlayerName">Jogador</strong></div>
+                <div><span>Data:</span><strong id="contractDate">--/--/----</strong></div>
+              </div>
+              <div class="registered-ok">✅ <strong>COMPROMISSO REGISTRADO</strong></div>
+              <p><strong id="contractPlayerMessageName">Jogador</strong>, sua jornada pode começar.</p>
+              <p>Suas escolhas ajudarão seu robô a evoluir.</p>
+              <div class="contract-final-actions">
+                <button id="startJourneyAfterContractBtn" class="primary-btn" type="button">INICIAR JORNADA</button>
+                <button id="downloadContractBtn" class="secondary-btn" type="button">BAIXAR CONTRATO DA JORNADA</button>
+              </div>
+            </div>
+          </section>
+          <p class="contract-footnote">Este é um compromisso educativo. Ele ajuda você a praticar leitura, escolha, responsabilidade e participação consciente.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="homeScreen" class="screen hidden">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">JOGO PEDAGÓGICO • PENSAMENTO COMPUTACIONAL</span>
+          <h2>Organize rotinas. Planeje caminhos. Cuide do ambiente e das pessoas.</h2>
+          <p>
+            Programe o seu robô por meio de sequências de comandos. O jogo combina
+            rotina diária, autocuidado, estratégia, reciclagem, classificação de materiais,
+            acolhimento, convivência e direitos humanos.
+          </p>
+
+          <div class="hero-actions">
+            <button class="primary-btn" id="startConsciousBtn" type="button">INICIAR CONSCIÊNCIA+</button>
+            <button class="secondary-btn" id="quickHelpBtn" type="button">COMO JOGAR</button>
+          </div>
+
+        </div>
+
+        <aside class="level-showcase" aria-label="Níveis do jogo">
+          <button class="level-card available" id="homeConsciousBtn" type="button">
+            <span class="level-number">NÍVEL 1</span>
+            <h3>CONSCIÊNCIA+</h3>
+            <p>A Jornada de um Dia • turno matutino</p>
+            <span class="status" id="consciousStatus">Disponível</span>
+          </button>
+
+          <button class="level-card" id="homeEcoBtn" type="button">
+            <span class="level-number">NÍVEL 2</span>
+            <h3>ECOTECH+</h3>
+            <p>Planeje, programe e recicle.</p>
+            <span class="status" id="ecoStatus">Bloqueado</span>
+          </button>
+
+          <button class="level-card" id="homeHumanBtn" type="button">
+            <span class="level-number">NÍVEL 3</span>
+            <h3>HUMANO+</h3>
+            <p>Acolha, respeite e conviva.</p>
+            <span class="status" id="humanStatus">Bloqueado</span>
+          </button>
+
+          <button class="level-card future-level-card" id="homeLevel4Btn" type="button">
+            <span class="level-number">NÍVEL 4</span>
+            <h3>CONTINUIDADE+</h3>
+            <p>Uma nova missão será construída aqui.</p>
+            <span class="status" id="level4Status">Bloqueado</span>
+          </button>
+
+          <button class="password-link" id="passwordBtn" type="button">⚡ Acesso ECOTECH+ / HUMANO+ / CONTINUIDADE+ por senha</button>
+        </aside>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen hidden">
+      <div class="game-shell">
+        <div class="stage-header">
+          <button class="ghost-btn home-neon-btn" id="backHomeBtn" type="button">← INÍCIO</button>
+          <div>
+            <span class="eyebrow" id="levelEyebrow">NÍVEL</span>
+            <h2 id="stageTitle">Fase</h2>
+            <div id="phaseDots" class="phase-dots" aria-label="Progresso das fases"></div>
+          </div>
+          <div class="stage-stats">
+            <span title="Execuções">▶ <b id="executionStat">0</b></span>
+            <span title="Erros">⚠ <b id="errorStat">0</b></span>
+            <span title="Entregues">✓ <b id="deliveredStat">0/0</b></span>
+          </div>
+        </div>
+
+        <div class="mission-premium">
+          <div class="mission-icon" aria-hidden="true">🎯</div>
+          <div>
+            <span>MISSÃO DA FASE</span>
+            <strong id="missionTitle">Planeje o percurso</strong>
+            <p id="missionText"></p>
+          </div>
+          <div class="tip-box">
+            <span>💡 DICA</span>
+            <p id="missionTip"></p>
+          </div>
+        </div>
+
+        <div id="humanBanner" class="human-banner hidden">
+          <strong>🤝 Salões do Acolhimento</strong>
+          <span>Espaços de identidade, proteção e convivência — não de separação.</span>
+        </div>
+
+        <div class="play-layout">
+          <div class="board-panel">
+            <div class="board-toolbar">
+              <div>
+                <span class="mini">TABULEIRO</span>
+                <strong id="boardSizeLabel">5 × 5</strong>
+              </div>
+              <p>👁 Clique em qualquer imagem para ampliar.</p>
+            </div>
+            <div class="board-stage">
+              <div id="board" class="board grid-5" aria-label="Tabuleiro do jogo"></div>
+              <div class="board-side-rail" aria-label="Orientações ao lado do tabuleiro">
+                <div id="feedback" class="feedback info" role="status">
+                  <span id="feedbackIcon">💬</span>
+                  <div>
+                    <strong id="feedbackTitle">Observe antes de agir</strong>
+                    <p id="feedbackText">Planeje sua sequência de comandos antes de executar.</p>
+                  </div>
+                </div>
+                <aside id="boundaryAlert" class="boundary-alert hidden" role="alert" aria-live="assertive">
+                  <span class="boundary-icon">⚠️</span>
+                  <strong>ATENÇÃO</strong>
+                  <p id="boundaryAlertText">Seu robô tentou sair do tabuleiro. Revise a direção do comando e depure o algoritmo.</p>
+                </aside>
+              </div>
+            </div>
+          </div>
+
+          <aside class="control-panel">
+            <div class="command-card premium-card">
+              <span class="mini">COMANDOS</span>
+              <div class="arrow-pad">
+                <button class="arrow-btn up" data-command="MOVE_UP" type="button" aria-label="Cima"><span></span></button>
+                <button class="arrow-btn left" data-command="MOVE_LEFT" type="button" aria-label="Esquerda"><span></span></button>
+                <button id="actionCommandBtn" class="action-btn" data-command="ACTION" type="button" aria-label="Coletar ou entregar" title="Coletar / Entregar">✓</button>
+                <button class="arrow-btn right" data-command="MOVE_RIGHT" type="button" aria-label="Direita"><span></span></button>
+                <button class="arrow-btn down" data-command="MOVE_DOWN" type="button" aria-label="Baixo"><span></span></button>
+              </div>
+              <button class="execute-btn" id="executeBtn" type="button" aria-label="Executar comandos" title="Executar">▶</button>
+            </div>
+
+            <div class="queue-card premium-card">
+              <div class="queue-head">
+                <span class="mini">ALGORITMO</span>
+                <b id="queueCount">0</b>
+              </div>
+              <div id="commandQueue" class="command-queue"></div>
+              <div class="queue-tools">
+                <button id="undoBtn" type="button">↶ Desfazer</button>
+                <button id="clearBtn" type="button">⌫ Limpar</button>
+                <button id="resetBtn" type="button">↻ Reiniciar fase</button>
+              </div>
+            </div>
+
+            <div class="inventory premium-card">
+              <span class="mini">ACOMPANHAMENTO</span>
+              <div class="inventory-grid">
+                <div><span id="carryLabel">Carregando</span><strong id="carryStat">0</strong></div>
+                <div><span>Restantes</span><strong id="remainingStat">0</strong></div>
+              </div>
+            </div>
+
+            <div class="pentagon-card premium-card" id="pentagonCard">
+              <div class="pentagon-head">
+                <div><span class="mini">PENTÁGONO DA EVOLUÇÃO</span><strong>Como seu robô está agora</strong></div>
+                <div class="pentagon-average">MÉDIA <b id="pentagonAverage">2,00</b></div>
+              </div>
+              <svg id="pentagonSvg" class="pentagon-svg" viewBox="0 0 240 240" role="img" aria-label="Pentágono com os cinco eixos de evolução"></svg>
+              <div class="pentagon-axis-list">
+                <div><span>🛡️ Higiene</span><b id="pentagonHygieneValue">2,00</b><small id="pentagonHygieneStage">básico</small></div>
+                <div><span>⚡ Alimentação</span><b id="pentagonFoodValue">2,00</b><small id="pentagonFoodStage">instável</small></div>
+                <div><span>🌙 Sono</span><b id="pentagonSleepValue">2,00</b><small id="pentagonSleepStage">parcial</small></div>
+                <div><span>🧠 Estudos</span><b id="pentagonStudyValue">2,00</b><small id="pentagonStudyStage">observação inicial</small></div>
+                <div><span>⚖️ Lazer</span><b id="pentagonBalanceValue">2,00</b><small id="pentagonBalanceStage">oscilante</small></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <section id="consciousClueScreen" class="conscious-clue-screen hidden" role="dialog" aria-modal="true" aria-labelledby="consciousClueTitle">
+    <div class="clue-shell">
+      <div class="clue-topline">
+        <button class="ghost-btn home-neon-btn" type="button" onclick="goHome()">← INÍCIO</button>
+        <div class="clue-error-counter">
+          <span>ERROS CONSECUTIVOS</span>
+          <strong id="consciousClueErrors">0/2</strong>
+        </div>
+      </div>
+
+      <div class="clue-heading">
+        <span class="eyebrow">CONSCIÊNCIA+ • A JORNADA DE UM DIA</span>
+        <h2 id="consciousClueTitle">Qual é a próxima pista?</h2>
+        <p>O estudante frequenta a escola no turno matutino. Leia as quatro pistas e escolha qual etapa deve acontecer agora.</p>
+      </div>
+
+      <div id="consciousClueCards" class="clue-card-grid" aria-label="Pistas da rotina"></div>
+
+      <div id="consciousClueFeedback" class="clue-feedback info" role="status">
+        Escolha a pista que corresponde à próxima etapa da rotina.
+      </div>
+
+      <div id="consciousClueRestartPanel" class="clue-restart-panel hidden">
+        <span class="clue-restart-icon">↻</span>
+        <h3>RECOMEÇAR CONSCIÊNCIA+</h3>
+        <p id="consciousClueRestartReason">Dois erros consecutivos interromperam a sequência.</p>
+        <p>O bloco atual será reiniciado. Os quatro cantos permanecem nos mesmos lugares e as tarefas serão redistribuídas pelo tabuleiro.</p>
+        <button id="consciousClueRestartBtn" class="primary-btn" type="button">REINICIAR A JORNADA</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="quizModal" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-card quiz-modal">
+      <span class="eyebrow" id="quizTheme">QUIZ</span>
+      <div class="quiz-category" id="quizCategory">TEMA</div>
+      <h2 id="quizQuestion">Pergunta</h2>
+      <div id="quizOptions" class="quiz-options"></div>
+      <div id="quizFeedback" class="quiz-feedback neutral">Escolha uma alternativa.</div>
+      <div class="modal-actions">
+        <span id="quizProgress">1/3</span>
+        <button class="primary-btn" id="quizNextBtn" type="button" disabled>PRÓXIMA</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="evolutionModal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="evolutionTitle">
+    <div class="modal-card evolution-card">
+      <span class="eyebrow">EVOLUÇÃO DO ROBÔ</span>
+      <h2 id="evolutionTitle">Pentágono atualizado</h2>
+      <h3 id="evolutionBlockTitle">Bloco concluído</h3>
+      <div class="evolution-layout">
+        <svg id="evolutionPentagonSvg" class="pentagon-svg evolution-pentagon" viewBox="0 0 240 240" aria-label="Pentágono atualizado"></svg>
+        <div class="evolution-gains">
+          <article><span>🧩 TAREFAS</span><strong id="evolutionTaskGain">+0,50</strong></article>
+          <article><span>🧠 QUIZ</span><strong id="evolutionQuizGain">+0,50</strong></article>
+          <p>Na Fase 1, cada eixo pode ganhar no máximo <b>+1,00 ponto</b>: até 0,50 pelas tarefas e até 0,50 pelo quiz.</p>
+        </div>
+      </div>
+      <button id="continueEvolutionBtn" class="primary-btn" type="button">CONTINUAR JORNADA</button>
+    </div>
+  </section>
+
+  <section id="phase1CompleteModal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="phase1CompleteTitle">
+    <div class="modal-card phase1-complete-card">
+      <span class="eyebrow">CONSCIÊNCIA+ • FASE 1 CONCLUÍDA</span>
+      <h2 id="phase1CompleteTitle">Parabéns!</h2>
+      <div class="phase1-complete-image-wrap">
+        <strong id="phase1CompleteImageName">Tarefas concluídas</strong>
+        <img id="phase1CompleteImage" src="20.jpg" alt="Tarefas concluídas">
+      </div>
+      <p>Você concluiu os quatro blocos de atividades. Suas escolhas atualizaram os cinco sistemas do robô.</p>
+      <div class="phase1-summary-grid">
+        <div class="phase1-pentagon-wrap">
+          <svg id="phase1PentagonSvg" class="pentagon-svg" viewBox="0 0 240 240" aria-label="Pentágono ao final da Fase 1"></svg>
+          <span>Média atual: <b id="phase1Average">2,00</b></span>
+        </div>
+        <div class="phase1-robot-wrap">
+          <img id="phase1RobotImage" src="assets/robo_m_inicial.png" alt="Robô do jogador">
+          <span>Estágio do robô</span>
+          <strong id="phase1RobotStage">INICIAL</strong>
+        </div>
+      </div>
+      <p class="phase1-note">A Fase 1 pode levar cada eixo de 2,0 até 3,0. As Fases 2 e 3 continuarão a evolução até o limite de 5,0.</p>
+      <button id="phase1HomeBtn" class="primary-btn" type="button">VOLTAR AO INÍCIO</button>
+    </div>
+  </section>
+
+  <section id="resultModal" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-card result-card">
+      <div id="resultIcon" class="result-icon">⭐</div>
+      <span class="eyebrow">MISSÃO CONCLUÍDA</span>
+      <h2 id="resultTitle">Jogada Excelente</h2>
+      <p id="resultText"></p>
+      <div id="resultExtra" class="result-extra"></div>
+      <button class="primary-btn" id="continueBtn" type="button">CONTINUAR</button>
+    </div>
+  </section>
+
+  <section id="humanIntroModal" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-card human-intro">
+      <span class="eyebrow">NÍVEL HUMANO+ • DIREITOS HUMANOS</span>
+      <h2>Salões do Acolhimento</h2>
+      <p>
+        Cada grupo será conduzido a um <strong>Salão do Acolhimento</strong>.
+        Esses espaços <strong>não existem para separar as pessoas</strong>, mas para
+        garantir que cada grupo possa preservar, expressar e compartilhar sua cultura,
+        sua história, seus costumes e suas formas de viver.
+      </p>
+      <p>
+        Ao mesmo tempo, todos continuam fazendo parte de uma mesma comunidade,
+        convivendo, aprendendo e construindo relações com os demais grupos.
+      </p>
+      <div class="human-principle">
+        <strong>Acolher as diferenças não significa criar distância.</strong>
+        <span>Significa garantir respeito, identidade, participação e convivência.</span>
+      </div>
+      <p class="human-closing">🌎 Diferentes culturas, os mesmos direitos, uma sociedade compartilhada.</p>
+      <button class="primary-btn" id="humanIntroStartBtn" type="button">COMEÇAR HUMANO+</button>
+    </div>
+  </section>
+
+  <section id="helpModal" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-card help-modal">
+      <button class="modal-close" id="closeHelpBtn" type="button" aria-label="Fechar">✕</button>
+      <span class="eyebrow">INSTRUÇÕES DO JOGO</span>
+      <h2>Como jogar</h2>
+
+      <div class="help-highlight-grid">
+        <article>
+          <span aria-hidden="true">🧠</span>
+          <div>
+            <strong>Monte algoritmos</strong>
+            <p>Cada toque em uma seta adiciona 1 comando. Seu robô só se move quando você pressiona EXECUTAR.</p>
+          </div>
+        </article>
+        <article>
+          <span aria-hidden="true">🔎</span>
+          <div>
+            <strong>Amplie as imagens</strong>
+            <p>Clique em qualquer imagem do tabuleiro para abri-la centralizada em tela cheia.</p>
+          </div>
+        </article>
+        <article>
+          <span aria-hidden="true">🤝</span>
+          <div>
+            <strong>Salões do Acolhimento</strong>
+            <p>São espaços simbólicos de identidade, proteção, memória e convivência. Não representam separação: cada grupo pode preservar e compartilhar sua cultura, sua história e seus costumes sem se isolar do convívio com os demais.</p>
+          </div>
+        </article>
+        <article>
+          <span aria-hidden="true">🖼️</span>
+          <div>
+            <strong>Imagens em tela cheia</strong>
+            <p>Clique em qualquer imagem do tabuleiro para ampliá-la. Ela será centralizada em tela cheia, sobre fundo preto, com moldura azul neon e botão VOLTAR.</p>
+          </div>
+        </article>
+      </div>
+
+      <div class="help-grid">
+        <article>
+          <strong>1. Observe antes de agir</strong>
+          <p>No CONSCIÊNCIA+, escolha primeiro a pista correta em tela cheia. Depois, identifique as quatro estações nos cantos, as ações espalhadas e a posição do seu robô antes de programar.</p>
+        </article>
+        <article>
+          <strong>2. Monte o algoritmo</strong>
+          <p>Use ▲ ▼ ◀ ▶ para adicionar movimentos. O botão verde ✓ adiciona a ação COLETAR / ENTREGAR. Use-o uma vez sobre o objeto ou a pessoa para coletar/acompanhar e novamente sobre a lixeira, ponto de reciclagem ou Salão do Acolhimento correto para entregar.</p>
+        </article>
+        <article>
+          <strong>3. Execute</strong>
+          <p>Os comandos só serão realizados ao pressionar o botão azul ▶. Se a execução terminar sem erro, a janela do algoritmo será limpa automaticamente. Se houver erro, os comandos permanecem visíveis para você depurar.</p>
+        </article>
+        <article>
+          <strong>4. Amplie qualquer imagem</strong>
+          <p>Clique em uma imagem do tabuleiro. Ela será aberta centralizada em tela cheia, sobre fundo preto e com borda azul neon.</p>
+        </article>
+        <article>
+          <strong>5. CONSCIÊNCIA+ — A Jornada de um Dia</strong>
+          <p>
+            A Fase 1 utiliza um tabuleiro <b>5×5</b> com quatro blocos. Antes de cada bloco, quatro pistas aparecem em tela cheia e o jogador identifica a próxima etapa da rotina.
+            Os quatro cantos permanecem fixos: <b>Sono que restaura → Higiene e alimentação → Dedicação aos estudos → Trabalho e Lazer</b>.
+            Somente o canto do bloco atual fica iluminado. Todas as tarefas desse bloco aparecem ao mesmo tempo e podem ser coletadas em qualquer ordem.
+            Depois das entregas, o quiz atualiza o <b>Pentágono da Evolução</b>.
+          </p>
+        </article>
+        <article>
+          <strong>6. ECOTECH+</strong>
+          <p><b>Novo desafio:</b> os itens e obstáculos mudam de posição a cada entrada ou reinício da fase. Observe o tabuleiro novamente antes de programar.<br><br>O ECOTECH+ utiliza sempre um tabuleiro <b>6×6</b>, com classificação de recicláveis e rejeitos, coleta seletiva e obstáculos.</p>
+        </article>
+        <article class="wide-help">
+          <strong>7. HUMANO+ e Salões do Acolhimento</strong>
+          <p>
+            O HUMANO+ utiliza sempre um tabuleiro <b>6×6</b>.<br><br>
+            As pessoas mudam de posição a cada entrada ou reinício da fase. Seu robô deve conduzir <b>um grupo por vez</b>. Ela pode reunir todas as pessoas que pertencem ao mesmo Salão do Acolhimento e entregá-las juntas. Somente depois dessa entrega poderá iniciar a condução de outro grupo.<br><br>
+            Os Salões do Acolhimento são espaços simbólicos de identidade, proteção, memória e preservação cultural.
+            Eles <b>não existem para separar pessoas</b>. No jogo, conduzir um grupo ao salão correspondente significa
+            reconhecer sua história, seus costumes e suas formas de viver, mantendo o diálogo, a participação e a convivência
+            com todos os demais grupos em uma sociedade compartilhada.
+          </p>
+        </article>
+        <article class="wide-help">
+          <strong>8. CONTINUIDADE+ — Nível 4</strong>
+          <p>O quarto nível utiliza um tabuleiro <b>6×6</b>. Nesta versão, ele funciona como uma área de preparação: o tabuleiro e os textos iniciais já estão disponíveis, enquanto imagens, objetos e novos desafios serão inseridos posteriormente.</p>
+        </article>
+        <article class="wide-help">
+          <strong>9. Visualização das imagens</strong>
+          <p>
+            O CONSCIÊNCIA+ usa as imagens <b>01.jpg a 40.jpg</b> na raiz do GitHub. O sistema escolhe automaticamente a sequência masculina ou feminina conforme o perfil.
+            Ao clicar, a imagem abre em tela cheia e o cabeçalho mostra <b>somente o nome da ação</b>; os códigos ficam guardados apenas internamente.
+            As imagens antigas dos níveis ECOTECH+ e HUMANO+ ficam na pasta <b>legacy</b> para evitar conflito de nomes.
+          </p>
+        </article>
+        <article class="wide-help">
+          <strong>10. Classificação das jogadas</strong>
+          <p><b>Jogada Básica:</b> houve erro e foi preciso depurar. <b>Jogada Excelente:</b> missão sem erros, mesmo em mais de uma execução. <b>Jogada dos Deuses:</b> missão completa em uma única execução e sem erros.</p>
+        </article>
+      </div>
+      <button class="primary-btn" id="closeHelpBottomBtn" type="button">ENTENDI</button>
+    </div>
+  </section>
+
+  <section id="passwordModal" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-card password-modal">
+      <button class="modal-close" id="closePasswordBtn" type="button" aria-label="Fechar">✕</button>
+      <span class="eyebrow">ACESSO ESPECIAL</span>
+      <h2 id="passwordTitle">ECOTECH+, HUMANO+ e CONTINUIDADE+</h2>
+      <p>A mesma senha especial pode desbloquear o ECOTECH+, o HUMANO+ e o CONTINUIDADE+. Você também pode liberar os níveis concluindo a progressão normal do jogo.</p>
+      <input id="passwordInput" type="password" placeholder="Digite a senha" autocomplete="off">
+      <div id="passwordFeedback" class="password-feedback"></div>
+      <button class="primary-btn" id="passwordConfirmBtn" type="button">DESBLOQUEAR NÍVEIS</button>
+    </div>
+  </section>
+
+  <section id="imageViewer" class="image-viewer hidden" role="dialog" aria-modal="true">
+    <button class="viewer-close" id="viewerCloseBtn" type="button">← VOLTAR</button>
+    <div class="viewer-content">
+      <div class="viewer-heading">
+        <span id="viewerLabel" class="viewer-label">Imagem</span>
+      </div>
+      <div class="viewer-frame">
+        <img id="viewerImage" src="01.jpg" alt="Imagem ampliada">
+      </div>
+    </div>
+  </section>
+
+  <section id="finalModal" class="overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-card final-card">
+      <div class="final-icon">🏆</div>
+      <span class="eyebrow">JORNADA CONCLUÍDA</span>
+      <h2 id="finalTitle">Parabéns!</h2>
+      <p id="finalText"></p>
+      <button class="primary-btn" id="finalHomeBtn" type="button">VOLTAR AO INÍCIO</button>
+    </div>
+  </section>
+
+  <div id="sexProfileModal" class="overlay-modal hidden" role="dialog" aria-modal="true" aria-labelledby="sexProfileTitle">
+    <div class="overlay-card compact-overlay-card">
+      <h2 id="sexProfileTitle">Escolha a versão do seu robô</h2>
+      <p>Este perfil foi criado em uma versão anterior. Escolha uma opção para personalizar o avatar.</p>
+      <div class="legacy-sex-actions">
+        <button type="button" class="primary-btn" data-legacy-sex="masculino">♂ MASCULINO</button>
+        <button type="button" class="primary-btn" data-legacy-sex="feminino">♀ FEMININO</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="contractMoreModal" class="overlay-modal hidden" role="dialog" aria-modal="true" aria-labelledby="contractMoreTitle">
+    <div class="overlay-card contract-more-card">
+      <button id="closeContractMoreBtn" class="overlay-close" type="button" aria-label="Fechar">✕</button>
+      <span class="eyebrow">SAIBA MAIS</span>
+      <h2 id="contractMoreTitle">Por que esses sistemas existem?</h2>
+      <div class="more-system-grid">
+        <article><h3>🛡️ Escudo de proteção</h3><p>A higiene representa prevenção, conservação e cuidado. No robô, ajuda a reduzir contaminações, sujeira e desgaste.</p></article>
+        <article><h3>⚡ Núcleo de energia</h3><p>A alimentação representa o abastecimento necessário para manter o organismo e o robô funcionando com energia.</p></article>
+        <article><h3>🌙 Sistema de recarga</h3><p>O sono representa repouso e recuperação. O robô recarrega usando fontes sustentáveis, reforçando também o cuidado ambiental.</p></article>
+        <article><h3>🧠 Visor do conhecimento</h3><p>Estudar e organizar-se ajudam a compreender pessoas, objetos, situações e consequências, respeitando direitos humanos e o meio ambiente.</p></article>
+        <article><h3>⚖️ Módulo de equilíbrio</h3><p>Lazer e bem-estar ajudam a evitar sobrecarga e favorecem decisões seguras, responsáveis e equilibradas.</p></article>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
